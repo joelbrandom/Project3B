@@ -64,3 +64,68 @@ std::string Morse::decodeMessage(const std::string& input)
 	}
 	return output;
 }
+
+void Morse::populateEncodeMap()
+{
+	encode['a'] = "._";
+	encode['b'] = "_...";
+	encode['c'] = "_._.";
+	encode['d'] = "_..";
+	encode['e'] = ".";
+	encode['f'] = ".._.";
+	encode['g'] = "__.";
+	encode['h'] = "....";
+	encode['i'] = "..";
+	encode['j'] = ".___";
+	encode['k'] = "_._";
+	encode['l'] = "._..";
+	encode['m'] = "__";
+	encode['n'] = "_.";
+	encode['o'] = "___";
+	encode['p'] = ".__.";
+	encode['q'] = "__._";
+	encode['r'] = "._.";
+	encode['s'] = "...";
+	encode['t'] = "_";
+	encode['u'] = ".._";
+	encode['v'] = "..._";
+	encode['w'] = ".__";
+	encode['x'] = "_.._";
+	encode['y'] = "_.__";
+	encode['z'] = "__..";
+	//encode[' '] = " ";
+}
+
+void Morse::populateDecodeTree(const std::string& source)
+{
+	Binary_Tree<std::string> decode("");
+	std::ifstream ifs(source);
+	if (ifs)
+	{
+		std::string letter, line, code;
+		while (getline(ifs, line))
+		{
+			BTNode<std::string>* local_root = decode.getRoot();
+			letter = line[0];
+			for (int i = 1; i < line.length(); ++i)
+			{
+				code = line[i];
+				if (code == ".")
+				{
+					if (local_root->left == NULL)
+						local_root->left = new BTNode<std::string>("");
+					local_root = local_root->left;
+				}
+				if (code == "_")
+				{
+					if (local_root->right == NULL)
+						local_root->right = new BTNode<std::string>("");
+					local_root = local_root->right;
+				}
+			}
+			local_root->data = letter;
+		}
+		ifs.close();
+	}
+	decoder = decode;
+}
