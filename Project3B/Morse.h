@@ -1,3 +1,6 @@
+#ifndef Morse_h
+#define Morse_h
+
 #include <iostream>
 #include <string>
 #include <map>
@@ -129,3 +132,5 @@ void Morse::populateDecodeTree(const std::string& source)
 	}
 	decoder = decode;
 }
+
+#endif
