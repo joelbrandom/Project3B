@@ -20,8 +20,6 @@ public:
 };
 
 /* Constructor for Morse class
-When constructor is called, encoder and decoder will be populated with
-populateEncodeMap() and populateDecodeTree()
 */
 Morse::Morse()
 {
