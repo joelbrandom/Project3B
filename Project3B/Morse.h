@@ -36,9 +36,17 @@ std::string Morse::encodeMessage(const std::string& input)
 	// Go through input string character by character
 	for (size_t i = 0; i < input.length(); ++i)
 	{
-		// Get the Morse value from encoder map
-		// using tolower in case capital characters are entered
-		result += encoder[tolower(input.at(i))];
+		// Assign current letter (input[i]) to current_letter
+		// This is the letter we're currently working with
+		char current_letter = input.at(i);
+
+		// If letter is not alphabetical, return error
+		if (!isalpha(current_letter))
+			return "Error: a non-alphabetical character was found.\n";
+
+		// Get the corresponding Morse from encoder map using current letter
+		// tolower() in case user inputs any capital letters
+		result += encoder[tolower(current_letter)];
 		// If there's more characters to be encoded, add a space before next loop
 		if (i + 1 < input.length())
 			result += " ";
