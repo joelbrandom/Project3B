@@ -8,5 +8,7 @@ int main()
 	Morse morse;
 	std::cout << morse.encodeMessage(input) << '\n';
 	std::cout << morse.decodeMessage(input2) << '\n';
+	// Get rid of this below
+	system("PAUSE");
 	return 0;
 }
