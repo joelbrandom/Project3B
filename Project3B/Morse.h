@@ -5,8 +5,6 @@
 #include <string>
 #include <map>
 #include <fstream>
-#include <sstream>
-#include <regex>
 #include "Binary_Tree.h"
 
 class Morse
@@ -18,8 +16,7 @@ public:
 	Morse();
 	std::string encodeMessage(const std::string&);
 	std::string decodeMessage(const std::string&);
-	void populateEncodeMap();
-	void populateDecodeTree(const std::string&);
+	void populateMapAndTree(const std::string&);
 };
 
 /* Constructor for Morse class
@@ -28,8 +25,6 @@ populateEncodeMap() and populateDecodeTree()
 */
 Morse::Morse()
 {
-	populateEncodeMap();
-	populateDecodeTree("morse.txt");
 }
 
 /* Encodes string of alphabetical characters to Morse and returns as string
@@ -39,7 +34,7 @@ std::string Morse::encodeMessage(const std::string& input)
 {
 	std::string result;
 	// Go through input string character by character
-	for (int i = 0; i < input.length(); ++i)
+	for (size_t i = 0; i < input.length(); ++i)
 	{
 		// Get the Morse value from encoder map
 		// using tolower in case capital characters are entered
@@ -60,7 +55,7 @@ std::string Morse::decodeMessage(const std::string& input)
 	// Create local_root at the root of decoder tree
 	BTNode<std::string>* local_root = decoder.getRoot();
 	// Go through input character by character
-	for (int i = 0; i < input.length(); ++i)
+	for (size_t i = 0; i < input.length(); ++i)
 	{
 		// If we encounter a ., go left
 		if (input.at(i) == '.')
@@ -89,57 +84,29 @@ std::string Morse::decodeMessage(const std::string& input)
 	return output;
 }
 
-/* Populates the map used for encoding with alphabetical keys and corresponding Morse
-*/
-void Morse::populateEncodeMap()
-{
-	encoder['a'] = "._";
-	encoder['b'] = "_...";
-	encoder['c'] = "_._.";
-	encoder['d'] = "_..";
-	encoder['e'] = ".";
-	encoder['f'] = ".._.";
-	encoder['g'] = "__.";
-	encoder['h'] = "....";
-	encoder['i'] = "..";
-	encoder['j'] = ".___";
-	encoder['k'] = "_._";
-	encoder['l'] = "._..";
-	encoder['m'] = "__";
-	encoder['n'] = "_.";
-	encoder['o'] = "___";
-	encoder['p'] = ".__.";
-	encoder['q'] = "__._";
-	encoder['r'] = "._.";
-	encoder['s'] = "...";
-	encoder['t'] = "_";
-	encoder['u'] = ".._";
-	encoder['v'] = "..._";
-	encoder['w'] = ".__";
-	encoder['x'] = "_.._";
-	encoder['y'] = "_.__";
-	encoder['z'] = "__..";
-	//encoder[' '] = " ";
-}
-
-/* Populates the tree used for decoding, so it can decode following Morse
+/* Populates binary tree for decoding and map for encoding
 @param source Source file with alphabetical characters and their corresponding Morse
 */
-void Morse::populateDecodeTree(const std::string& source)
+void Morse::populateMapAndTree(const std::string& source)
 {
 	Binary_Tree<std::string> decode("");
 	std::ifstream ifs(source);
 	if (ifs)
 	{
-		std::string letter, line, code;
+		std::string line, code;
+		char letter;
 		while (getline(ifs, line))
 		{
 			// Create local_root at root of decode tree
 			BTNode<std::string>* local_root = decode.getRoot();
 			// The alphabetical character (letter) will be the first character in the line
-			letter = line[0];
+			letter = line.at(0);
+
+			// Populate encoder map at letter with corresponding Morse (the rest of the line = code)
+			encoder[letter] = line.substr(1, line.length() - 1);
+
 			// Go through line character by character after letter (0)
-			for (int i = 1; i < line.length(); ++i)
+			for (size_t i = 1; i < line.length(); ++i)
 			{
 				// code is the value we're checking against, our current character of line
 				code = line[i];

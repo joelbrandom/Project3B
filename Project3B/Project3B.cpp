@@ -1,14 +1,15 @@
 #include "stdafx.h"
 #include <iostream>
+#include <string>
 #include "Morse.h"
 
 int main()
 {
-	std::string input = "abcdefghijklmnopqrstuvwxyz", input2 = "._ _... _._. _.. . .._. __. .... .. .___ _._ ._.. __ _. ___ .__. __._ ._. ... _ .._ ..._ .__ _.._ _.__ __..";
+	std::string encodeInput = "HelloWorld", decodeInput = "..._ . ._. _.__ __. ___ ___ _.. _.. ___ __.";
 	Morse morse;
-	std::cout << morse.encodeMessage(input) << '\n';
-	std::cout << morse.decodeMessage(input2) << '\n';
-	// Get rid of this below
-	system("PAUSE");
+	morse.populateMapAndTree("morse.txt");
+	std::cout << encodeInput << " encoded: " << morse.encodeMessage(encodeInput) << '\n';
+	std::cout << decodeInput << " decoded: " << morse.decodeMessage(decodeInput) << '\n';
+	// Set a breakpoint here to pause program
 	return 0;
 }
